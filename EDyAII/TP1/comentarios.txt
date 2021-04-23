@@ -1,0 +1,23 @@
+Todo bien con search, insert y delete. Podría ahorrarse algo de
+duplicación de código, pero funcionan perfecto.
+
+keys tiene un error, ejemplo:
+
+> keys (insertar "DD" 0 (insertar "D" 1 (vacio :: TTree Char Int)))
+["D","D"]
+
+Cuando el resultado debería ser ["D", "DD"]. El problema es que la
+llamada recursiva `keys m` en el último caso de keys no agrega el
+caracter en `key` a las claves de `m`. Parece que fue una omisión y
+la llamada debería ser `auxKeys m [key]` para que sea correcto. Sin
+embargo creo que mejor aún sería definir
+
+keys t = map reverse (auxKeys t [])
+
+Y directamente evitar toda la duplicación.
+
+Como comentario menor en la instancia se puede definir
+
+  insertar = insert
+
+sin usar los argumentos, pero es cuestión de estilo.
